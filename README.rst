@@ -41,10 +41,7 @@ First add the context processors in your settings:
                     'django.template.context_processors.request',
                     'django.contrib.auth.context_processors.auth',
                     'django.contrib.messages.context_processors.messages',
-<<<<<<< HEAD
                     'segment.context_processors.segment'
-=======
->>>>>>> [Documentation] Add few things in the readme file (fixes #1).
                 ],
             },
         },
