@@ -5,6 +5,7 @@ from django.core.exceptions import ImproperlyConfigured
 import analytics
 
 from . import settings
+from segment.utils import str2bool
 
 
 class SegmentConfig(AppConfig):
@@ -12,14 +13,16 @@ class SegmentConfig(AppConfig):
 
     def ready(self):
         analytics.write_key = settings.SEGMENT_WRITE_KEY
-        try:
-            analytics.debug = bool(settings.SEGMENT_DEBUG)
-        except Exception:
-            raise ImproperlyConfigured('SEGMENT_DEBUG settings must be a boolean value')
 
         try:
-            analytics.send = bool(settings.SEGMENT_SEND)
-        except Exception:
+            analytics.debug = str2bool(settings.SEGMENT_DEBUG)
+        except ValueError:
+            raise ImproperlyConfigured(
+                'SEGMENT_DEBUG settings must be a boolean value')
+
+        try:
+            analytics.send = str2bool(settings.SEGMENT_SEND)
+        except ValueError:
             raise ImproperlyConfigured('SEGMENT_SEND must be a boolean value')
 
         if settings.SEGMENT_ON_ERROR is not None:
